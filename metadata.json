@@ -1,0 +1,6 @@
+{
+  "name": "FLOODX AI - Flood Prediction & Monitoring",
+  "description": "Premium AI-powered flood prediction, real-time GIS dashboard, smart water level IoT telemetry, and early warning system.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

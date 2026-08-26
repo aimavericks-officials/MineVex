@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
+  :root {
+    --bg-main: #02060D;
+    --card-bg: #08111F;
+    --card-border: rgba(0, 180, 255, 0.15);
+    --blue-primary: #006BFF;
+    --blue-secondary: #00B7FF;
+    --text-white: #F5F7FA;
+    --text-muted: #98A4B3;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #02060D;
+}
+::-webkit-scrollbar-thumb {
+  background: #0d1e38;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 183, 255, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #006BFF;
+}
+
+/* Glowing Neon utility classes */
+.neon-border {
+  border: 1px solid rgba(0, 183, 255, 0.18);
+  box-shadow: 0 0 15px rgba(0, 107, 255, 0.08), inset 0 0 15px rgba(0, 183, 255, 0.03);
+}
+
+.neon-border-active {
+  border: 1px solid rgba(0, 183, 255, 0.5);
+  box-shadow: 0 0 25px rgba(0, 183, 255, 0.25), inset 0 0 15px rgba(0, 107, 255, 0.15);
+}
+
+.neon-text-glow {
+  text-shadow: 0 0 12px rgba(0, 183, 255, 0.6), 0 0 24px rgba(0, 107, 255, 0.4);
+}
+
+.neon-green-glow {
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+}
+
+.neon-red-glow {
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.7);
+}
+
+.glass-panel {
+  background: rgba(8, 17, 31, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 180, 255, 0.15);
+}
+
+.cyber-grid-bg {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 183, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 183, 255, 0.04) 1px, transparent 1px);
+}
+
+.radial-glow-top {
+  background: radial-gradient(circle at 50% 0%, rgba(0, 107, 255, 0.18) 0%, rgba(2, 6, 13, 0) 70%);
+}
+
+.radial-glow-center {
+  background: radial-gradient(circle at 50% 50%, rgba(0, 183, 255, 0.1) 0%, rgba(2, 6, 13, 0) 65%);
+}
+
+/* Arduino LCD 16x2 Display styling */
+.lcd-screen {
+  background: #0f380f;
+  color: #9bbc0f;
+  font-family: 'Courier New', Courier, monospace;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8), 0 0 8px rgba(155, 188, 15, 0.3);
+  text-shadow: 0 0 4px rgba(155, 188, 15, 0.8);
+  letter-spacing: 2px;
+}
+
+.lcd-screen-blue {
+  background: #001538;
+  color: #00e1ff;
+  font-family: 'JetBrains Mono', 'Courier New', monospace;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.9), 0 0 12px rgba(0, 225, 255, 0.4);
+  text-shadow: 0 0 6px rgba(0, 225, 255, 0.9);
+  letter-spacing: 1.5px;
+}
+
+/* Pulse signal animations on wires */
+@keyframes signalPulse {
+  0% { stroke-dashoffset: 40; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.wire-animated {
+  stroke-dasharray: 6 6;
+  animation: signalPulse 1.2s linear infinite;
+}
+
+/* Leaflet dark theme tweaks */
+.leaflet-container {
+  background: #060d1a !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #08111F !important;
+  color: #F5F7FA !important;
+  border: 1px solid rgba(0, 180, 255, 0.3) !important;
+  box-shadow: 0 0 20px rgba(0, 107, 255, 0.3) !important;
+  border-radius: 8px !important;
+}
+
+.leaflet-popup-tip {
+  background: #08111F !important;
+  border: 1px solid rgba(0, 180, 255, 0.3) !important;
+}
