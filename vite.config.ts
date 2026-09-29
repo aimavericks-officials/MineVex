@@ -5,7 +5,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/floodx-gcetts/',
+    base: '/MineVex/',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
