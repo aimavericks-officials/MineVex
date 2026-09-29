@@ -1,200 +1,178 @@
 import React from 'react';
-import { 
-  Database, 
-  Cpu, 
-  Layers, 
-  LineChart, 
-  BellRing
-} from 'lucide-react';
+import { RESEARCH_PIPELINE, FURTHER_READING } from '../data/minevexData';
+import { Camera, Layers, AlertCircle, Cpu, MapPin, Compass, Monitor, BookOpen, ExternalLink } from 'lucide-react';
 
 export default function ResearchSection() {
+  const getStageIcon = (type: string) => {
+    switch (type) {
+      case 'camera':
+        return Camera;
+      case 'sensor':
+        return Layers;
+      case 'collision':
+        return AlertCircle;
+      case 'trajectory':
+        return Cpu;
+      case 'map':
+        return MapPin;
+      case 'motion':
+        return Compass;
+      case 'simulation':
+        return Monitor;
+      default:
+        return BookOpen;
+    }
+  };
+
   return (
-    <section id="research" className="relative py-16 bg-[#02060D] scroll-mt-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* ================= LEFT COLUMN: TITLE, INTRO & TECH BADGES (4 Cols) ================= */}
-          <div className="lg:col-span-4 flex flex-col justify-between">
-            <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-[#006BFF] mb-1.5 font-mono">
-                RESEARCH & DATA CREDIBILITY
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#F5F7FA] tracking-tight mb-4 leading-tight">
-                Built on Trusted Data.
-                <br />
-                Powered by Advanced AI.
-              </h2>
-              <p className="text-xs sm:text-sm text-[#98A4B3] leading-relaxed mb-8">
-                FLOODX integrates multi-source geospatial and hydrological datasets with state-of-the-art AI models for accurate flood prediction and intelligent decision-making.
-              </p>
+    <section id="research" className="py-20 bg-[#070B0F] border-b border-[#16222C] relative">
+      <div className="w-[92%] max-w-[1180px] mx-auto space-y-16">
+        {/* Header (Matching Screenshot 3) */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[#FFB020]/20 border border-[#FFB020]/40 flex items-center justify-center">
+              <span className="text-[#FFB020] font-black text-sm">M</span>
             </div>
-
-            {/* 3 Tech Stack Badges matching mockup (Python, TensorFlow, Leaflet.js) */}
-            <div className="flex items-center gap-3">
-              {/* Python Badge */}
-              <div className="flex-1 p-3 rounded-xl bg-[#08111F] border border-[#00B7FF]/15 flex flex-col items-center justify-center text-center shadow-[0_4px_15px_rgba(0,0,0,0.3)]">
-                <div className="w-8 h-8 mb-1.5 flex items-center justify-center">
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
-                    <path d="M11.9 2C6.9 2 7.2 4.1 7.2 4.1L7.2 6.3L12.1 6.3L12.1 7.4L4.7 7.4C4.7 7.4 2 7.1 2 12.1C2 17.1 4.3 16.9 4.3 16.9L5.8 16.9L5.8 14.8C5.8 14.8 5.7 12.3 8.3 12.3L13.2 12.3C13.2 12.3 15.6 12.4 15.6 10L15.6 4.3C15.6 4.3 16 2 11.9 2ZM9.9 3.5C10.5 3.5 11 4 11 4.6C11 5.2 10.5 5.7 9.9 5.7C9.3 5.7 8.8 5.2 8.8 4.6C8.8 4 9.3 3.5 9.9 3.5Z" fill="#38BDF8"/>
-                    <path d="M12.1 22C17.1 22 16.8 19.9 16.8 19.9L16.8 17.7L11.9 17.7L11.9 16.6L19.3 16.6C19.3 16.6 22 16.9 22 11.9C22 6.9 19.7 7.1 19.7 7.1L18.2 7.1L18.2 9.2C18.2 9.2 18.3 11.7 15.7 11.7L10.8 11.7C10.8 11.7 8.4 11.6 8.4 14L8.4 19.7C8.4 19.7 8 22 12.1 22ZM14.1 20.5C13.5 20.5 13 20 13 19.4C13 18.8 13.5 18.3 14.1 18.3C14.7 18.3 15.2 18.8 15.2 19.4C15.2 20 14.7 20.5 14.1 20.5Z" fill="#FBBF24"/>
-                  </svg>
-                </div>
-                <span className="text-xs font-semibold text-[#F5F7FA]">Python</span>
-              </div>
-
-              {/* TensorFlow Badge */}
-              <div className="flex-1 p-3 rounded-xl bg-[#08111F] border border-[#00B7FF]/15 flex flex-col items-center justify-center text-center shadow-[0_4px_15px_rgba(0,0,0,0.3)]">
-                <div className="w-8 h-8 mb-1.5 flex items-center justify-center">
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2L3 7.5V16.5L7.5 14V9.5L12 7L16.5 9.5V14L21 16.5V7.5L12 2Z" fill="#F97316"/>
-                    <path d="M12 11.5L7.5 14V18.5L12 21L16.5 18.5V14L12 11.5Z" fill="#EA580C"/>
-                  </svg>
-                </div>
-                <span className="text-xs font-semibold text-[#F5F7FA]">TensorFlow</span>
-              </div>
-
-              {/* Leaflet.js Badge */}
-              <div className="flex-1 p-3 rounded-xl bg-[#08111F] border border-[#00B7FF]/15 flex flex-col items-center justify-center text-center shadow-[0_4px_15px_rgba(0,0,0,0.3)]">
-                <div className="w-8 h-8 mb-1.5 flex items-center justify-center">
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM9.5 16.5L5.5 12.5L6.91 11.09L9.5 13.67L17.09 6.09L18.5 7.5L9.5 16.5Z" fill="#22C55E"/>
-                  </svg>
-                </div>
-                <span className="text-xs font-semibold text-[#F5F7FA]">Leaflet.js</span>
-              </div>
-            </div>
+            <span className="text-sm font-bold text-white tracking-wide">
+              AI Mavericks
+            </span>
+            <span className="px-3 py-1 rounded-full bg-[#111A22] border border-[#FFB020]/40 text-[#FFB020] text-xs font-mono font-bold">
+              Smart India Hackathon 2026
+            </span>
           </div>
 
-          {/* ================= RIGHT COLUMN: 2 ROWS OF 5 CARDS (8 Cols) ================= */}
-          <div className="lg:col-span-8 flex flex-col gap-4">
-            
-            {/* Top Row: 5 Official Scientific Data Sources matching mockup */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-              
-              {/* Source 1: IMD */}
-              <div className="p-4 rounded-xl bg-[#08111F] border border-[#00B7FF]/15 flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:border-[#00B7FF]/40 transition-colors">
-                <div className="w-10 h-10 rounded-full bg-[#030712] border border-amber-500/40 p-1 flex items-center justify-center mb-2 shadow-inner">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-yellow-400 flex items-center justify-center text-[10px] font-black text-black">
-                    IMD
-                  </div>
-                </div>
-                <div className="text-xs font-bold text-[#F5F7FA]">IMD</div>
-                <div className="text-[10px] text-[#98A4B3] mt-0.5 leading-tight">India Meteorological Department</div>
-              </div>
+          <h2 className="text-4xl sm:text-5xl font-black text-white tracking-tight">
+            Research &amp; <span className="text-[#FFB020]">References</span>
+          </h2>
 
-              {/* Source 2: CWC */}
-              <div className="p-4 rounded-xl bg-[#08111F] border border-[#00B7FF]/15 flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:border-[#00B7FF]/40 transition-colors">
-                <div className="w-10 h-10 rounded-full bg-[#030712] border border-[#006BFF]/40 p-1 flex items-center justify-center mb-2 shadow-inner">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-[#006BFF] to-[#00B7FF] flex items-center justify-center text-[10px] font-black text-white">
-                    CWC
-                  </div>
-                </div>
-                <div className="text-xs font-bold text-[#F5F7FA]">CWC</div>
-                <div className="text-[10px] text-[#98A4B3] mt-0.5 leading-tight">Central Water Commission</div>
-              </div>
-
-              {/* Source 3: ISRO Bhuvan */}
-              <div className="p-4 rounded-xl bg-[#08111F] border border-[#00B7FF]/15 flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:border-[#00B7FF]/40 transition-colors">
-                <div className="w-10 h-10 rounded-full bg-[#030712] border border-orange-500/40 p-1 flex items-center justify-center mb-2 shadow-inner">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center text-[9px] font-black text-white">
-                    ISRO
-                  </div>
-                </div>
-                <div className="text-xs font-bold text-[#F5F7FA]">ISRO Bhuvan</div>
-                <div className="text-[10px] text-[#98A4B3] mt-0.5 leading-tight">Satellite & Geospatial Data</div>
-              </div>
-
-              {/* Source 4: OpenStreetMap */}
-              <div className="p-4 rounded-xl bg-[#08111F] border border-[#00B7FF]/15 flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:border-[#00B7FF]/40 transition-colors">
-                <div className="w-10 h-10 rounded-full bg-[#030712] border border-emerald-500/40 p-1 flex items-center justify-center mb-2 shadow-inner">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-[9px] font-black text-black">
-                    OSM
-                  </div>
-                </div>
-                <div className="text-xs font-bold text-[#F5F7FA]">OpenStreetMap</div>
-                <div className="text-[10px] text-[#98A4B3] mt-0.5 leading-tight">Open Source Mapping</div>
-              </div>
-
-              {/* Source 5: NASA SRTM */}
-              <div className="p-4 rounded-xl bg-[#08111F] border border-[#00B7FF]/15 flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:border-[#00B7FF]/40 transition-colors">
-                <div className="w-10 h-10 rounded-full bg-[#030712] border border-blue-500/40 p-1 flex items-center justify-center mb-2 shadow-inner">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-blue-700 to-indigo-500 flex items-center justify-center text-[9px] font-black text-white">
-                    NASA
-                  </div>
-                </div>
-                <div className="text-xs font-bold text-[#F5F7FA]">NASA SRTM</div>
-                <div className="text-[10px] text-[#98A4B3] mt-0.5 leading-tight">Digital Elevation Model</div>
-              </div>
-
-            </div>
-
-            {/* Bottom Row: 5 Processing Steps matching mockup */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
-              
-              {/* Step 1: Real-time Data Ingestion */}
-              <div className="p-4 rounded-xl bg-[#08111F] border border-[#00B7FF]/15 flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
-                <div className="w-8 h-8 mb-2 flex items-center justify-center text-[#98A4B3]">
-                  <Database className="w-5 h-5" />
-                </div>
-                <div className="text-xs font-medium text-[#F5F7FA] leading-tight">
-                  Real-time Data Ingestion
-                </div>
-              </div>
-
-              {/* Step 2: AI/ML Models */}
-              <div className="p-4 rounded-xl bg-[#08111F] border border-[#00B7FF]/15 flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
-                <div className="w-8 h-8 mb-2 flex items-center justify-center text-[#98A4B3]">
-                  <Cpu className="w-5 h-5" />
-                </div>
-                <div className="text-xs font-medium text-[#F5F7FA] leading-tight">
-                  AI/ML Models (TensorFlow)
-                </div>
-              </div>
-
-              {/* Step 3: Geospatial Analysis */}
-              <div className="p-4 rounded-xl bg-[#08111F] border border-[#00B7FF]/15 flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
-                <div className="w-8 h-8 mb-2 flex items-center justify-center text-[#98A4B3]">
-                  <Layers className="w-5 h-5" />
-                </div>
-                <div className="text-xs font-medium text-[#F5F7FA] leading-tight">
-                  Geospatial Analysis (Leaflet.js)
-                </div>
-              </div>
-
-              {/* Step 4: Predictive Insights */}
-              <div className="p-4 rounded-xl bg-[#08111F] border border-[#00B7FF]/15 flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
-                <div className="w-8 h-8 mb-2 flex items-center justify-center text-[#98A4B3]">
-                  <LineChart className="w-5 h-5" />
-                </div>
-                <div className="text-xs font-medium text-[#F5F7FA] leading-tight">
-                  Predictive Insights
-                </div>
-              </div>
-
-              {/* Step 5: Early Warning Generation */}
-              <div className="p-4 rounded-xl bg-[#08111F] border border-[#00B7FF]/15 flex flex-col items-center text-center shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
-                <div className="w-8 h-8 mb-2 flex items-center justify-center text-[#98A4B3]">
-                  <BellRing className="w-5 h-5" />
-                </div>
-                <div className="text-xs font-medium text-[#F5F7FA] leading-tight">
-                  Early Warning Generation
-                </div>
-              </div>
-
-            </div>
-
-            {/* Academic Disclaimer */}
-            <div className="text-center pt-2">
-              <span className="text-[11px] text-[#98A4B3]">
-                All datasets are publicly available and used strictly for academic & research purposes.
-              </span>
-            </div>
-
-          </div>
-
+          <p className="text-base sm:text-lg text-[#AEBBC4] max-w-3xl leading-relaxed">
+            The published work behind MineVexAI's seven-stage safety pipeline — from perception in fog to full-scenario simulation. Supporting MineVexAI with existing research on autonomous collision prevention in underground and open-pit mines.
+          </p>
         </div>
 
+        {/* The pipeline, stage by stage (Matching Screenshots 3, 4, 5) */}
+        <div className="space-y-8">
+          <div>
+            <h3 className="text-2xl font-black text-white tracking-tight">
+              The pipeline, stage by stage
+            </h3>
+            <p className="text-xs sm:text-sm text-[#8EA0AD] max-w-2xl mt-1 leading-relaxed">
+              Each stage of MineVexAI maps to a specific, peer-reviewed foundation. The papers below are ordered the way data moves through the system: sensed, fused, reasoned about, and rehearsed.
+            </p>
+          </div>
+
+          {/* Vertical Pipeline Cards with Stage Indicators */}
+          <div className="space-y-6 relative before:absolute before:left-5 before:top-4 before:bottom-4 before:w-0.5 before:bg-[#1A2834]">
+            {RESEARCH_PIPELINE.map((paper) => {
+              const Icon = getStageIcon(paper.iconType);
+
+              return (
+                <div key={paper.id} className="relative pl-12 group">
+                  {/* Left Circle Node */}
+                  <div className="absolute left-0 top-6 w-10 h-10 rounded-xl bg-[#091017] border border-[#21303C] group-hover:border-[#FFB020] flex items-center justify-center text-[#FFB020] shadow-md transition-all z-10">
+                    <Icon className="w-4 h-4" />
+                  </div>
+
+                  {/* Stage Card */}
+                  <div className="p-6 sm:p-7 rounded-2xl bg-[#0D141B] border border-[#21303C] hover:border-[#FFB020]/50 transition-all space-y-4 shadow-xl">
+                    {/* Stage Header */}
+                    <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#46D9FF] tracking-wider uppercase">
+                      <span>0{paper.stageNumber}</span>
+                      <span>·</span>
+                      <span>{paper.stageName}</span>
+                    </div>
+
+                    {/* Paper Title & Abstract Description */}
+                    <div>
+                      <h4 className="text-base sm:text-lg font-bold text-white group-hover:text-[#FFB020] transition-colors leading-snug">
+                        {paper.title}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-[#8EA0AD] mt-2 leading-relaxed">
+                        {paper.description}
+                      </p>
+                    </div>
+
+                    {/* Publication Citation & Action Buttons */}
+                    <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-[#182633]">
+                      <div className="text-xs font-mono text-[#AEBAC3] space-y-0.5">
+                        <div className="text-white font-semibold">{paper.paperTitle}</div>
+                        <div className="text-[#6C7E8B]">
+                          {paper.year} · {paper.journal} {paper.doi && `· doi:${paper.doi}`}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2.5 shrink-0">
+                        {paper.secondaryUrl && (
+                          <a
+                            href={paper.secondaryUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#21303C] bg-[#111A22] hover:bg-[#182632] text-xs font-mono text-[#46D9FF] font-semibold transition-all"
+                          >
+                            <span>{paper.secondaryUrlLabel || 'Secondary'}</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        )}
+
+                        <a
+                          href={paper.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg border border-[#FFB020]/40 bg-[#16201B] hover:bg-[#FFB020] text-[#FFB020] hover:text-[#0A0D10] text-xs font-mono font-bold transition-all"
+                        >
+                          <span>View paper</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Further Reading (Matching Screenshot 5) */}
+        <div className="space-y-6 pt-6 border-t border-[#182633]">
+          <div>
+            <h3 className="text-2xl font-black text-white tracking-tight">
+              Further reading
+            </h3>
+            <p className="text-xs sm:text-sm text-[#8EA0AD] max-w-2xl mt-1 leading-relaxed">
+              Two additional papers held in reserve, in case a stage above needs a second citation.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {FURTHER_READING.map((item) => (
+              <div
+                key={item.id}
+                className="p-6 rounded-2xl bg-[#0D141B] border border-[#21303C] hover:border-[#FFB020]/40 transition-all flex flex-col justify-between gap-4"
+              >
+                <div>
+                  <h4 className="text-base font-bold text-white leading-snug">
+                    {item.title}
+                  </h4>
+                  <div className="text-xs font-mono text-[#6C7E8B] mt-2">
+                    {item.year} · {item.journal} {item.doi && `· doi:${item.doi}`}
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-[#FFB020]/40 bg-[#141B16] text-[#FFB020] text-xs font-mono font-bold hover:bg-[#FFB020] hover:text-[#0A0D10] transition-all"
+                  >
+                    <span>View paper</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

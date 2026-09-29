@@ -1,3 +1,79 @@
+export interface SiteAsset {
+  id: string;
+  title: string;
+  category: 'hero' | 'logo' | 'diagram' | 'team' | 'general';
+  imageUrl: string;
+  uploadedBy: string;
+  updatedAt: string;
+  fileSize?: number;
+  dimensions?: string;
+}
+
+export interface AccidentDataPoint {
+  year: number;
+  fatalAccidents: number;
+  notes?: string;
+}
+
+export interface MineVehicle {
+  id: string;
+  name: string;
+  type: string;
+  speedKmH: number;
+  distanceM: number;
+  status: 'SAFE' | 'WARNING' | 'CRITICAL';
+  x: number;
+  y: number;
+  heading: number;
+  driverId: string;
+  payloadTons: number;
+}
+
+export interface ResearchPaper {
+  id: string;
+  stageNumber?: number;
+  stageName: string;
+  title: string;
+  description: string;
+  paperTitle: string;
+  year: number;
+  journal: string;
+  doi?: string;
+  url?: string;
+  secondaryUrl?: string;
+  secondaryUrlLabel?: string;
+  iconType: 'camera' | 'sensor' | 'collision' | 'trajectory' | 'map' | 'motion' | 'simulation' | 'book';
+}
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  avatarUrl: string;
+  skills: string[];
+  githubUrl?: string;
+  linkedinUrl?: string;
+  twitterUrl?: string;
+  researchUrl?: string;
+  email?: string;
+  order: number;
+}
+
+export interface SimulationTelemetry {
+  visibilityMeters: number;
+  recommendedSpeedKmH: number;
+  minSafeDistanceMeters: number;
+  riskLevel: 'LOW' | 'MODERATE' | 'HIGH' | 'CRITICAL';
+  conditionText: string;
+  detectionMode: string;
+  systemLatencyMs: number;
+  activeVehicles: number;
+  riskEventsCount: number;
+  alertsIssuedCount: number;
+}
+
+// Legacy compatibility interfaces
 export interface MonitoredZone {
   id: string;
   name: string;
@@ -12,7 +88,7 @@ export interface MonitoredZone {
   inundationAreaSqKm: number;
   evacuationStatus: 'Normal' | 'Advisory' | 'Warning' | 'Mandatory Evacuation';
   populationAtRisk: number;
-  embankmentIntegrity: number; // percentage
+  embankmentIntegrity: number;
 }
 
 export interface LiveEventLog {
@@ -56,21 +132,6 @@ export interface ArduinoComponent {
   voltage: string;
   sampleSnippet: string;
   color: string;
-}
-
-export interface TeamMember {
-  id: string;
-  name: string;
-  role: string;
-  bio: string;
-  avatarUrl: string;
-  skills: string[];
-  githubUrl?: string;
-  linkedinUrl?: string;
-  twitterUrl?: string;
-  researchUrl?: string;
-  email?: string;
-  order: number;
 }
 
 export interface ResearchSource {

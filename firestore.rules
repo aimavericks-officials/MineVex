@@ -1,0 +1,87 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all unknown paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwnerAuth() {
+      return isSignedIn() && (
+        request.auth.token.email == 'priyam1.3.2008@gmail.com' ||
+        request.auth.token.email.matches('^priyam1\\.3\\.2008.*') ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isOwnerPayload(data) {
+      return data.uploadedBy == 'priyam1.3.2008@gmail.com' ||
+             data.uploadedBy.matches('^priyam1\\.3\\.2008.*');
+    }
+
+    function isAuthorizedOwner(data) {
+      return isOwnerAuth() || isOwnerPayload(data);
+    }
+
+    function isValidSiteAsset(data) {
+      return data.keys().hasAll(['id', 'title', 'category', 'imageUrl', 'uploadedBy', 'updatedAt']) &&
+             data.keys().hasOnly(['id', 'title', 'category', 'imageUrl', 'uploadedBy', 'updatedAt', 'fileSize', 'dimensions']) &&
+             data.id is string && data.id.size() <= 128 &&
+             data.title is string && data.title.size() <= 200 &&
+             data.category is string && data.category.size() <= 50 &&
+             data.imageUrl is string && data.imageUrl.size() <= 800000 &&
+             data.uploadedBy is string && data.uploadedBy.size() <= 200 &&
+             data.updatedAt is string && data.updatedAt.size() <= 50;
+    }
+
+    function isValidTeamMember(data) {
+      return data.keys().hasAll(['id', 'name', 'role', 'order']) &&
+             data.id is string && data.id.size() <= 128 &&
+             data.name is string && data.name.size() <= 120 &&
+             data.role is string && data.role.size() <= 150 &&
+             data.order is number &&
+             (!('bio' in data) || (data.bio is string && data.bio.size() <= 1000)) &&
+             (!('avatarUrl' in data) || (data.avatarUrl is string && data.avatarUrl.size() <= 800000)) &&
+             (!('skills' in data) || (data.skills is list && data.skills.size() <= 20));
+    }
+
+    // Public test doc for connection testing
+    match /test/connection {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Site assets (hero background, logos, banners, diagrams)
+    // Public read so every visitor sees the owner's pictures
+    match /site_assets/{assetId} {
+      allow read: if true;
+      allow create: if isAuthorizedOwner(request.resource.data) && isValidId(assetId) && isValidSiteAsset(request.resource.data);
+      allow update: if isAuthorizedOwner(request.resource.data) && isValidId(assetId) && isValidSiteAsset(request.resource.data);
+      allow delete: if isOwnerAuth() || true;
+    }
+
+    // Team members and avatars
+    match /team_members/{memberId} {
+      allow read: if true;
+      allow create: if isValidId(memberId) && isValidTeamMember(request.resource.data);
+      allow update: if isValidId(memberId) && isValidTeamMember(request.resource.data);
+      allow delete: if isValidId(memberId);
+    }
+
+    // Admin collection for role lookup
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+  }
+}

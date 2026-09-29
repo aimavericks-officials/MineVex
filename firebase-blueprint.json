@@ -1,0 +1,98 @@
+{
+  "entities": {
+    "SiteAsset": {
+      "title": "SiteAsset",
+      "description": "Custom image or media asset uploaded by the owner to be displayed across the MineVex AI site.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique asset identifier.",
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "description": "Human-readable label for the asset.",
+          "maxLength": 200
+        },
+        "category": {
+          "type": "string",
+          "description": "Category for the asset such as hero, logo, diagram, team, or general.",
+          "maxLength": 50
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Image data URL or hosted URL for public display.",
+          "maxLength": 800000
+        },
+        "uploadedBy": {
+          "type": "string",
+          "description": "Email or UID of the uploader.",
+          "maxLength": 200
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of the last update.",
+          "maxLength": 50
+        }
+      },
+      "required": ["id", "title", "category", "imageUrl", "uploadedBy", "updatedAt"]
+    },
+    "TeamMemberRecord": {
+      "title": "TeamMemberRecord",
+      "description": "Persistent record of an AI Mavericks team member profile and photo.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Member identifier.",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of member.",
+          "maxLength": 120
+        },
+        "role": {
+          "type": "string",
+          "description": "Role or designation.",
+          "maxLength": 150
+        },
+        "bio": {
+          "type": "string",
+          "description": "Biography.",
+          "maxLength": 1000
+        },
+        "avatarUrl": {
+          "type": "string",
+          "description": "Avatar image data URL or public URL.",
+          "maxLength": 800000
+        },
+        "skills": {
+          "type": "array",
+          "description": "Array of skill badges."
+        },
+        "order": {
+          "type": "number",
+          "description": "Display order index."
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of update.",
+          "maxLength": 50
+        }
+      },
+      "required": ["id", "name", "role", "order"]
+    }
+  },
+  "firestore": {
+    "/site_assets/{assetId}": {
+      "schema": "SiteAsset",
+      "description": "Public site images and background assets manageable by the owner."
+    },
+    "/team_members/{memberId}": {
+      "schema": "TeamMemberRecord",
+      "description": "Public roster and photos of AI Mavericks team members."
+    }
+  }
+}

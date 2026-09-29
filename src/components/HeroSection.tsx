@@ -1,219 +1,208 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
-import { 
-  ArrowRight, 
-  MapPin, 
-  CloudRain, 
-  Waves, 
-  ShieldCheck, 
-  Bell, 
-  Gauge
-} from 'lucide-react';
-import aaDamImg from '../assets/images/aa.jpg';
-import damAerialImg from '../assets/images/dam_aerial_release.jpg';
+import React from 'react';
+import { ArrowDown, ArrowRight, Shield, Radio, Upload } from 'lucide-react';
+import { useSiteAssets } from '../context/SiteAssetsContext';
 
 interface HeroSectionProps {
-  onExploreDashboard: () => void;
-  onExploreIoT?: () => void;
+  onOpenOwnerPanel: () => void;
 }
 
-export default function HeroSection({ onExploreDashboard }: HeroSectionProps) {
-  // Count-up animation values
-  const [zonesCount, setZonesCount] = useState(0);
-  const [accuracyCount, setAccuracyCount] = useState(0);
+export default function HeroSection({ onOpenOwnerPanel }: HeroSectionProps) {
+  const { getAssetUrl, isOwner, assets } = useSiteAssets();
 
-  useEffect(() => {
-    const duration = 1500;
-    const steps = 30;
-    const stepTime = duration / steps;
-    let step = 0;
+  // Dynamic Upper Background: pulls from Firebase Firestore 'site_assets/hero_background' if uploaded by owner!
+  const bgImageUrl = getAssetUrl('hero_background', '/images/aa.jpg');
+  const isCustomBg = Boolean(assets['hero_background']);
 
-    const timer = setInterval(() => {
-      step++;
-      const progress = step / steps;
-      setZonesCount(Math.min(12, Math.round(12 * progress)));
-      setAccuracyCount(Math.min(97.6, Number((97.6 * progress).toFixed(1))));
-
-      if (step >= steps) {
-        clearInterval(timer);
-      }
-    }, stepTime);
-
-    return () => clearInterval(timer);
-  }, []);
+  const handleScroll = (id: string) => {
+    const el = document.querySelector(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
-    <section
-      id="home"
-      className="relative min-h-[90vh] lg:min-h-screen pt-28 lg:pt-36 pb-16 flex flex-col justify-between overflow-hidden bg-[#02060D] scroll-mt-24"
-    >
-      {/* ================= CLEAN STATIC DAM IMAGE BACKGROUND (aa.jpg) ================= */}
+    <header id="home" className="relative min-h-[92vh] pt-32 pb-20 flex flex-col justify-center overflow-hidden bg-[#070B0F] border-b border-[#16222C]">
+      {/* ================= DYNAMIC UPPER BACKGROUND IMAGE ================= */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
         <img
-          src={aaDamImg || '/images/aa.jpg'}
-          alt="Aerial photograph of dam releasing water into mountain reservoir"
-          referrerPolicy="no-referrer"
+          src={bgImageUrl}
+          alt="MineVex AI Upper Background"
+          className="w-full h-full object-cover object-[center_35%] filter brightness-90 contrast-110 transition-all duration-700"
           onError={(e) => {
-            // Fallback to public path if bundler asset fails
             (e.target as HTMLImageElement).src = '/images/aa.jpg';
           }}
-          className="w-full h-full object-cover object-center filter brightness-105 contrast-105"
         />
 
-        {/* Cinematic Gradient Vignettes for High Visibility of Dam & Crisp Text Contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#02060D]/90 via-[#02060D]/60 sm:via-[#02060D]/30 to-transparent w-full sm:w-4/5 lg:w-3/5" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#02060D] via-transparent to-[#02060D]/40" />
+        {/* High-Contrast Gradient Overlays for High Legibility & Cinematic Mood */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#070B0F] via-[#070B0F]/90 sm:via-[#070B0F]/70 to-transparent w-full md:w-3/4 lg:w-3/5" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#070B0F] via-transparent to-[#070B0F]/60" />
         
-        {/* Subtle Cyber Grid Overlay */}
-        <div className="absolute inset-0 cyber-grid-bg opacity-10" />
+        {/* Subtle Cyber Grid Texture */}
+        <div 
+          className="absolute inset-0 opacity-15"
+          style={{
+            backgroundImage: `linear-gradient(#ffffff0a 1px, transparent 1px), linear-gradient(90deg, #ffffff0a 1px, transparent 1px)`,
+            backgroundSize: '40px 40px'
+          }}
+        />
       </div>
 
-      {/* ================= MAIN HERO CONTENT ================= */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10 my-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[55vh]">
-          
-          {/* Left Column: Heading, Subtitle, CTA & Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="lg:col-span-8 flex flex-col items-start"
-          >
-            {/* Live System Indicator Badge */}
-            <div className="mb-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#08111F]/85 backdrop-blur-md border border-[#00B7FF]/30 text-xs font-mono text-[#00B7FF] shadow-[0_0_15px_rgba(0,183,255,0.2)]">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span>LIVE RESERVOIR TELEMETRY ACTIVE</span>
-            </div>
-
-            {/* Big 3-Line Heading */}
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.06] text-[#F5F7FA] mb-6">
-              <span>Predict.</span>
-              <br />
-              <span>Protect.</span>
-              <br />
-              <span className="text-[#0084FF] drop-shadow-[0_0_25px_rgba(0,132,255,0.6)]">Respond.</span>
-            </h1>
-
-            {/* Concise Subtitle */}
-            <p className="text-base sm:text-lg text-[#98A4B3] leading-relaxed max-w-xl mb-8 font-normal">
-              FLOODX combines live water monitoring, GIS risk mapping, historical analysis and early-warning logic into one clean flood intelligence interface.
-            </p>
-
-            {/* Blue Rounded Button */}
-            <div className="mb-14 flex items-center">
-              <button
-                id="hero-explore-dashboard-btn"
-                onClick={onExploreDashboard}
-                className="group px-7 py-3.5 rounded-full bg-[#006BFF] hover:bg-[#0058D6] text-white font-semibold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-[0_0_20px_rgba(0,107,255,0.4)] hover:shadow-[0_0_30px_rgba(0,107,255,0.7)] transition-all duration-200 cursor-pointer"
-              >
-                <span>Explore Live Dashboard</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-
-            {/* 4 Stats in a clean horizontal row */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-10 pt-6 border-t border-[#00B7FF]/10 w-full">
-              {/* Stat 1: Monitored Zones */}
-              <div className="flex items-center gap-3">
-                <div className="text-[#00B7FF]">
-                  <Waves className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-[#F5F7FA] font-mono leading-none">
-                    {zonesCount}
-                  </div>
-                  <div className="text-xs text-[#98A4B3] mt-1 font-medium whitespace-nowrap">
-                    Monitored Zones
-                  </div>
-                </div>
-              </div>
-
-              {/* Stat 2: Prediction Accuracy */}
-              <div className="flex items-center gap-3">
-                <div className="text-[#00B7FF]">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-[#F5F7FA] font-mono leading-none">
-                    {accuracyCount}%
-                  </div>
-                  <div className="text-xs text-[#98A4B3] mt-1 font-medium whitespace-nowrap">
-                    Prediction Accuracy
-                  </div>
-                </div>
-              </div>
-
-              {/* Stat 3: Early Warnings */}
-              <div className="flex items-center gap-3">
-                <div className="text-[#00B7FF]">
-                  <Bell className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-[#F5F7FA] font-mono leading-none">
-                    &lt; 3s
-                  </div>
-                  <div className="text-xs text-[#98A4B3] mt-1 font-medium whitespace-nowrap">
-                    Warning Latency
-                  </div>
-                </div>
-              </div>
-
-              {/* Stat 4: 24 x 7 Monitoring */}
-              <div className="flex items-center gap-3">
-                <div className="text-[#00B7FF]">
-                  <Gauge className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-[#F5F7FA] font-mono leading-none">
-                    24 x 7
-                  </div>
-                  <div className="text-xs text-[#98A4B3] mt-1 font-medium whitespace-nowrap">
-                    Live Monitoring
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </motion.div>
-
-          {/* Right Column: Floating Location & Weather tags */}
-          <div className="lg:col-span-4 flex flex-col items-start lg:items-end justify-end mt-6 lg:mt-0 space-y-4">
-            {/* Location Tag */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-left lg:text-right bg-[#08111F]/85 backdrop-blur-md px-4 py-2.5 rounded-xl border border-[#00B7FF]/20 shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
-            >
-              <div className="flex items-center lg:justify-end gap-2 text-xs text-[#F5F7FA] font-semibold">
-                <MapPin className="w-3.5 h-3.5 text-[#00B7FF]" />
-                <span>Damodar River Basin</span>
-              </div>
-              <div className="text-[11px] text-[#98A4B3] font-mono mt-0.5">
-                22.5881° N, 88.2836° E
-              </div>
-            </motion.div>
-
-            {/* Weather Tag */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-left lg:text-right bg-[#08111F]/85 backdrop-blur-md px-4 py-2.5 rounded-xl border border-[#00B7FF]/20 shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
-            >
-              <div className="flex items-center lg:justify-end gap-2 text-xl font-bold text-[#F5F7FA] font-mono">
-                <CloudRain className="w-5 h-5 text-[#00B7FF]" />
-                <span>24°C</span>
-                <span className="text-xs text-[#98A4B3] font-sans font-normal ml-1">Light Rain</span>
-              </div>
-            </motion.div>
+      {/* Main Container */}
+      <div className="relative z-10 w-[92%] max-w-[1240px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        {/* Left Column: Heading, Subtitle, Text, and Action Buttons */}
+        <div className="lg:col-span-7 space-y-6">
+          {/* Eyebrow Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FFB020]/15 border border-[#FFB020]/30 text-[#FFB020] text-xs font-black tracking-[0.16em] uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#FFB020] animate-pulse" />
+            AI MAVERICKS · SMART INDIA HACKATHON 2026
           </div>
 
+          {/* Core Headline */}
+          <div className="space-y-1">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[0.95]">
+              SEE.
+              <br />
+              <span className="bg-gradient-to-r from-[#FFB020] via-[#FFA21F] to-[#FF6B35] bg-clip-text text-transparent">
+                PREDICT.
+              </span>
+              <br />
+              PROTECT.
+            </h1>
+            <p className="text-sm sm:text-base font-bold tracking-widest text-[#FFB020] uppercase font-mono pt-2">
+              MINEVEX AI — INTELLIGENT MINING VEHICLE SAFETY
+            </p>
+          </div>
+
+          {/* Description */}
+          <p className="text-base sm:text-lg text-[#AEBBC4] max-w-xl leading-relaxed">
+            An AI-powered safety architecture designed for heavy mining vehicles operating in challenging environments. MineVexAI combines computer vision, sensor fusion and intelligent risk assessment to improve situational awareness.
+          </p>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap items-center gap-3.5 pt-2">
+            <button
+              onClick={() => handleScroll('#dashboard')}
+              className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#FFB020] to-[#FF8533] text-[#0A0D10] font-black text-xs uppercase tracking-wider hover:opacity-95 active:scale-95 transition-all shadow-xl shadow-[#FFB020]/30 cursor-pointer"
+            >
+              <span>Launch Safety Console</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => handleScroll('#accident-data')}
+              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-[#111A22]/90 hover:bg-[#16232E] border border-[#21303C] hover:border-[#FFB020]/40 text-white font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
+            >
+              <span>Explore Accident Data</span>
+              <ArrowDown className="w-4 h-4 text-[#FFB020]" />
+            </button>
+
+            {/* Quick Upload Background Prompt for Owner */}
+            <button
+              onClick={onOpenOwnerPanel}
+              className="inline-flex items-center gap-1.5 px-3.5 py-3 rounded-xl bg-black/40 hover:bg-black/60 border border-[#21303C] text-[11px] font-medium text-[#8EA0AD] hover:text-white transition-all cursor-pointer"
+              title="Replace upper background picture"
+            >
+              <Upload className="w-3.5 h-3.5 text-[#35E28B]" />
+              <span>{isCustomBg ? 'Firebase Custom BG' : 'Upload BG Picture'}</span>
+            </button>
+          </div>
+
+          {/* Highlights Mini Row */}
+          <div className="pt-4 flex flex-wrap gap-4 text-xs font-mono text-[#8EA0AD]">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#35E28B]" />
+              <span>Zero-Blind-Spot Architecture</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#46D9FF]" />
+              <span>YOLOv5s-Fog Deep Vision</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#FFB020]" />
+              <span>Predictive LSTM Trajectories</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Interactive Digital Mine HUD Visual Card */}
+        <div className="lg:col-span-5">
+          <div className="relative h-[380px] sm:h-[420px] rounded-2xl border border-[#21303C] bg-gradient-to-br from-[#111D26]/90 to-[#080C10]/95 shadow-2xl shadow-black/80 overflow-hidden flex flex-col justify-between p-4 group">
+            {/* Top HUD Bar */}
+            <div className="relative z-20 flex items-center justify-between">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0B1218]/90 border border-[#2A3A46] text-[11px] font-mono text-[#35E28B] font-bold">
+                <span className="w-2 h-2 rounded-full bg-[#35E28B] animate-ping" />
+                ● SYSTEM ONLINE
+              </span>
+              <span className="px-3 py-1 rounded-full bg-[#0B1218]/90 border border-[#2A3A46] text-[11px] font-mono text-[#B9C7CE]">
+                MINE: BAILADILA / SECTOR 07
+              </span>
+            </div>
+
+            {/* Central Simulated Mine Pit / Haul Road Grid */}
+            <div className="relative w-full h-full my-2 overflow-hidden rounded-xl border border-[#162530] bg-[#070B0E]">
+              {/* Topographical contours */}
+              <div 
+                className="absolute inset-0 opacity-25"
+                style={{
+                  background: 'radial-gradient(ellipse at 70% 30%, #24353d 0%, transparent 60%), linear-gradient(135deg, transparent 40%, #15222b 40%, #0d161d 65%, #182832 65%)'
+                }}
+              />
+
+              {/* Haul Road Lines */}
+              <div className="absolute -left-6 -right-6 top-1/2 h-4 bg-[#35434C] transform -rotate-12 shadow-[0_0_0_2px_#1B262F]">
+                <div className="w-full h-0.5 border-t border-dashed border-[#FFB020]/40 my-1.5" />
+              </div>
+              <div className="absolute -left-6 -right-6 top-[72%] h-4 bg-[#35434C] transform rotate-8 shadow-[0_0_0_2px_#1B262F]">
+                <div className="w-full h-0.5 border-t border-dashed border-[#46D9FF]/40 my-1.5" />
+              </div>
+
+              {/* Moving Vehicles */}
+              {/* Truck A17 */}
+              <div className="absolute left-[24%] top-[42%] -rotate-12 flex flex-col items-center">
+                <div className="w-16 h-8 rounded-lg bg-[#0C161D] border-2 border-[#46D9FF] flex items-center justify-center shadow-[0_0_20px_rgba(70,217,255,0.4)] animate-pulse">
+                  <span className="text-[9px] font-black text-[#46D9FF] font-mono">A17 · 31k</span>
+                </div>
+                <div className="w-0.5 h-6 bg-[#46D9FF]/40 border-r border-dashed" />
+              </div>
+
+              {/* Truck B08 */}
+              <div className="absolute left-[64%] top-[60%] rotate-8 flex flex-col items-center">
+                <div className="w-16 h-8 rounded-lg bg-[#0C161D] border-2 border-[#FFB020] flex items-center justify-center shadow-[0_0_20px_rgba(255,176,32,0.4)]">
+                  <span className="text-[9px] font-black text-[#FFB020] font-mono">B08 · 25k</span>
+                </div>
+              </div>
+
+              {/* Vehicle C03 */}
+              <div className="absolute left-[42%] top-[74%] rotate-8 flex flex-col items-center">
+                <div className="w-14 h-7 rounded-lg bg-[#0C161D] border-2 border-[#35E28B] flex items-center justify-center shadow-[0_0_15px_rgba(53,226,139,0.3)]">
+                  <span className="text-[8px] font-black text-[#35E28B] font-mono">C03 · 18k</span>
+                </div>
+              </div>
+
+              {/* Dynamic Scanning Laser sweep */}
+              <div 
+                className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#FFB020] to-transparent shadow-[0_0_15px_#FFB020] animate-[scan_3s_ease-in-out_infinite]"
+                style={{ top: '50%' }}
+              />
+
+              {/* Conflict Vector Overlay */}
+              <div className="absolute left-[36%] top-[45%] w-32 h-16 border-t-2 border-dashed border-[#FF4D5E] pointer-events-none transform rotate-18 opacity-80" />
+              <div className="absolute left-[45%] top-[40%] px-2 py-0.5 rounded bg-[#FF4D5E]/20 border border-[#FF4D5E] text-[9px] font-mono text-[#FF4D5E] font-bold">
+                CONFLICT: 4.2s
+              </div>
+            </div>
+
+            {/* Bottom HUD Status */}
+            <div className="relative z-20 flex items-center justify-between text-[11px] font-mono text-[#8EA0AD] pt-2 border-t border-[#182833]">
+              <div className="flex items-center gap-1.5">
+                <Radio className="w-3.5 h-3.5 text-[#FFB020]" />
+                <span>LiDAR + Radar Mesh</span>
+              </div>
+              <span className="text-[#35E28B] font-bold">PREDICTIVE MODE: ARMED</span>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+    </header>
   );
 }
