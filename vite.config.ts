@@ -5,7 +5,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/MineVex/',
+    base: process.env.GITHUB_ACTIONS ? '/MineVex/' : './',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {

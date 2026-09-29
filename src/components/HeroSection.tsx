@@ -59,7 +59,7 @@ export default function HeroSection({ onOpenOwnerPanel }: HeroSectionProps) {
 
           {/* Core Headline */}
           <div className="space-y-1">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[0.95]">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[0.95] font-['Inter',sans-serif]">
               SEE.
               <br />
               <span className="bg-gradient-to-r from-[#FFB020] via-[#FFA21F] to-[#FF6B35] bg-clip-text text-transparent">

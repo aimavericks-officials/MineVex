@@ -267,9 +267,9 @@ export const SiteAssetsProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }
   };
 
-  // Upload team member photo
+  // Upload team member photo with exact 1.2 : 1.6 ratio
   const updateTeamMemberPhoto = async (memberId: string, file: File): Promise<void> => {
-    const compressedDataUrl = await compressImage(file, 800, 0.88);
+    const compressedDataUrl = await compressMemberImage(file);
     const target = teamMembers.find((m) => m.id === memberId) || {
       id: memberId,
       name: 'Team Member',
@@ -337,8 +337,52 @@ export const SiteAssetsProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }
   };
 
+  // Formats image strictly to 1.2 x 1.6 aspect ratio (720x960)
   const compressMemberImage = async (file: File): Promise<string> => {
-    return compressImage(file, 800, 0.88);
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error('Failed to read image file'));
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onerror = () => reject(new Error('Failed to load image element'));
+        img.onload = () => {
+          const targetAspect = 1.2 / 1.6; // 0.75
+          let sWidth = img.width;
+          let sHeight = img.height;
+          let sX = 0;
+          let sY = 0;
+
+          if (sWidth / sHeight > targetAspect) {
+            const desiredWidth = sHeight * targetAspect;
+            sX = (sWidth - desiredWidth) / 2;
+            sWidth = desiredWidth;
+          } else {
+            const desiredHeight = sWidth / targetAspect;
+            sY = Math.max(0, (sHeight - desiredHeight) * 0.3);
+            sHeight = desiredHeight;
+          }
+
+          const outWidth = 720;
+          const outHeight = 960; // 720 * (1.6 / 1.2) = 960
+          const canvas = document.createElement('canvas');
+          canvas.width = outWidth;
+          canvas.height = outHeight;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error('Canvas context not available'));
+            return;
+          }
+          ctx.drawImage(img, sX, sY, sWidth, sHeight, 0, 0, outWidth, outHeight);
+          let dataUrl = canvas.toDataURL('image/webp', 0.88);
+          if (!dataUrl.startsWith('data:image/webp')) {
+            dataUrl = canvas.toDataURL('image/jpeg', 0.88);
+          }
+          resolve(dataUrl);
+        };
+        img.src = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    });
   };
 
   // Helper to get image URL with fallback
